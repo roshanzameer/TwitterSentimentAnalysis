@@ -31,17 +31,12 @@ class LiveListener(tweepy.StreamListener):
         parsed_tweet['date'] = str(status.created_at)
         parsed_tweet['sentiment'] = self.tw_obj.get_tweet_sentiment(status.text)
         print('Live Stream', parsed_tweet)
-
+        
+        # Flushing the messages to a kafka Topic
+        
         kafka_producer = self.kafka_obj.producer_instance()
         self.kafka_obj.publish_urls(kafka_producer, 'twitter', 'tweet', json.dumps(parsed_tweet))
-
-        """
-        here, push the data to kafka Topic
-        """
-
-        with open('streaming.txt', 'a') as f:
-            writer = csv.writer(f)
-            writer.writerow([status.author.screen_name, status.created_at, status.text])
+        
 
     def on_error(self, status_code):
         print('Encountered error with status code:', status_code)
