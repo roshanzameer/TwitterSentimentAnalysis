@@ -1,0 +1,49 @@
+version: '2'
+services:
+  db.postgres:
+    container_name: db.postgres
+    image: postgres
+    ports:
+      - '32270:5432'
+    environment:
+      POSTGRES_PASSWORD: Qwerty1234
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    networks:
+      app_net:
+        ipv4_address: 172.16.238.10
+
+  db.pgadmin:
+    container_name: db.pgadmin1
+    image: dpage/pgadmin4
+    ports:
+      - '5050:80'
+    environment:
+      PGADMIN_DEFAULT_EMAIL: 'admin@admin.com'
+      PGADMIN_DEFAULT_PASSWORD: 'Qwerty1234'
+    networks:
+      - app_net
+
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+  kafka:
+    image: wurstmeister/kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: 172.17.0.1
+#      KAFKA_CREATE_TOPICS: "test:1:1"
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+networks:
+  app_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.16.238.0/24
+        gateway: 172.16.238.1
