@@ -1,3 +1,8 @@
+"""
+This module connects to the Kafka topic and fetches the messages.
+The fetched messages are parsed into JSON format and written to the Database
+"""
+
 import json
 from kafka import KafkaConsumer
 from time import sleep
@@ -18,10 +23,12 @@ def consumer_instance(topic_name):
                     tweet = data['text']
                     date = data['date']
                     sentiment = data['sentiment']
+                    
                     print(date, tweet, sentiment)
+                    
+                    #calling the function to insert messages into the Database
                     data_store(date, tweet, sentiment)
-
-
+                    
                 except Exception as e:
                     print('consumer while', e)
 
@@ -36,6 +43,8 @@ def consumer_instance(topic_name):
 def data_store( date, tweet, sentiment):
 
     try:
+        
+        #inserting data to the Database
         cursor.execute(
             'INSERT INTO "TwitterData" (id, date, tweets, sentiment)'
             ' VALUES (Default, %s, %s, %s)', (date, tweet, sentiment)
