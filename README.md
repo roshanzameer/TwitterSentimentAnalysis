@@ -1,5 +1,6 @@
-# realtime_twitter_sentiment_analysis
-Analyse the sentiments of tweets in Real-time stream through Kafka
+# Real-time Twitter Sentiment Analysis and Storage
+
+Analyse the sentiments of tweets in Real-time stream through Kafka and store the processed tweets to database
 
 Overview:
 
