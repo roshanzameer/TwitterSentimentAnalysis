@@ -30,9 +30,15 @@ SET default_with_oids = false;
 
 CREATE TABLE public."TwitterData" (
     id integer NOT NULL,
+    tweet_id int
     date timestamp(4) without time zone,
     tweets character varying(500),
     sentiment text
+    user text
+    location character varying(100)
+    hashtags character varying(200)
+    retweet_count int
+    
 );
 
 
