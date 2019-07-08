@@ -27,11 +27,11 @@ def consumer_instance(topic_name):
                     location = data['location']
                     tweet_id = data['tweet_id']
                     retweet_count = data['retweet_count']
-                    user = data['user']
+                    username = data['user']
                     hashtags = data['hashtags']
                                         
                     #calling the function to insert messages into the Database
-                    data_store(date, tweet, sentiment, location, tweet_id, retweet_count, user, hashtags)
+                    data_store(date, tweet, sentiment, location, tweet_id, retweet_count, username, hashtags)
                     
                 except Exception as e:
                     print('consumer while', e)
@@ -44,13 +44,13 @@ def consumer_instance(topic_name):
         cursor.close()
         connection.close()
 
-def data_store( date, tweet, sentiment):
+def data_store( date, tweet, sentiment, location, tweet_id, retweet_count, username, hashtags):
 
     try:
         
         #inserting data to the Database
         cursor.execute(
-            'INSERT INTO "TwitterData" (id, tweet_id, date, tweets, sentiment, location, retweet_count, user, hashtags)'
+            'INSERT INTO "TwitterData" (id, tweet_id, date, tweets, sentiment, location, retweet_count, username, hashtags)'
             ' VALUES (Default, %s, %s, %s, %s, %s, %s, %s, %s)', (tweet_id, date, tweet, sentiment, location, retweet_count, user, hashtags)
             )
         connection.commit()
