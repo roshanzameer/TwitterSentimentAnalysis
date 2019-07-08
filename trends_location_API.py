@@ -1,8 +1,12 @@
+"""
+This API returns the trending hashtag and location detail of the country with most tweets along with the count
+
+"""
+
 from flask import Flask, request
 import logging
 from flask_cors import CORS
 import psycopg2
-from collections import Counter
 app = Flask(__name__)
 CORS(app)
 import json
@@ -28,6 +32,8 @@ def fetch_database():
 
         cursor.execute('SELECT location, hashtags from public."TwitterData"')
         data_all = cursor.fetchall()
+        
+        #returning both location and hashtag data from the database
         for data in data_all:
             countries.append(data[0])
             hashtags.append(data[1])
@@ -45,8 +51,11 @@ def get_max_count(all_list):
     unique_data = list(set(all_list))
     max_count = 0
     max_count_data = ''
-
+    
+    #iterating over the list and reducing to the number of occurences
     for data in unique_data:
+        
+        #ignoring empty data
         if data:
             temp_dict = dict()
             temp_dict[data] = all_list.count(data)
