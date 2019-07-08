@@ -59,7 +59,7 @@ class TwitterClient(object):
             # call twitter api to fetch tweets
             # for tweet in api.search('#machinelearning', count=5):
 
-            for tweet in tweepy.Cursor(api.search, q='#machinelearning', since='2019-07-05').items():
+            for tweet in tweepy.Cursor(api.search, q='#machinelearning', since='2019-06-25', until='2019-07-07').items():
 
                 # empty dictionary to store required params of a tweet
                 parsed_tweet = dict()
