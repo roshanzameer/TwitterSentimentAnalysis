@@ -51,7 +51,7 @@ def data_store( date, tweet, sentiment, location, tweet_id, retweet_count, usern
         #inserting data to the Database
         cursor.execute(
             'INSERT INTO "TwitterData" (id, tweet_id, date, tweets, sentiment, location, retweet_count, username, hashtags)'
-            ' VALUES (Default, %s, %s, %s, %s, %s, %s, %s, %s)', (tweet_id, date, tweet, sentiment, location, retweet_count, user, hashtags)
+            ' VALUES (Default, %s, %s, %s, %s, %s, %s, %s, %s)', (tweet_id, date, tweet, sentiment, location, retweet_count, username, hashtags)
             )
         connection.commit()
         print('Data written to Database')
