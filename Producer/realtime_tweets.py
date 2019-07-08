@@ -30,6 +30,16 @@ class LiveListener(tweepy.StreamListener):
         parsed_tweet['text'] = status.text
         parsed_tweet['date'] = str(status.created_at)
         parsed_tweet['sentiment'] = self.tw_obj.get_tweet_sentiment(status.text)
+        parsed_tweet['tweet_id'] = status.id_str
+        parsed_tweet['location'] = status.user.location
+        parsed_tweet['user'] = status.user.screen_name
+        parsed_tweet['retweet_count'] = status.retweet_count
+
+        if status.entities.get('hashtags'):
+            parsed_tweet['hashtags'] = ', '.join([i['text'] for i in status.entities.get('hashtags')])
+        else:
+            parsed_tweet['hashtags'] = ''
+            
         print('Live Stream', parsed_tweet)
         
         # Flushing the messages to a kafka Topic
