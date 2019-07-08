@@ -20,14 +20,18 @@ def consumer_instance(topic_name):
             for message in consumer:
                 try:
                     data = json.loads(message.value.decode('utf-8'))
+                    print(data)
                     tweet = data['text']
                     date = data['date']
                     sentiment = data['sentiment']
-                    
-                    print(date, tweet, sentiment)
-                    
+                    location = data['location']
+                    tweet_id = data['tweet_id']
+                    retweet_count = data['retweet_count']
+                    user = data['user']
+                    hashtags = data['hashtags']
+                                        
                     #calling the function to insert messages into the Database
-                    data_store(date, tweet, sentiment)
+                    data_store(date, tweet, sentiment, location, tweet_id, retweet_count, user, hashtags)
                     
                 except Exception as e:
                     print('consumer while', e)
@@ -46,8 +50,8 @@ def data_store( date, tweet, sentiment):
         
         #inserting data to the Database
         cursor.execute(
-            'INSERT INTO "TwitterData" (id, date, tweets, sentiment)'
-            ' VALUES (Default, %s, %s, %s)', (date, tweet, sentiment)
+            'INSERT INTO "TwitterData" (id, tweet_id, date, tweets, sentiment, location, retweet_count, user, hashtags)'
+            ' VALUES (Default, %s, %s, %s, %s, %s, %s, %s, %s)', (tweet_id, date, tweet, sentiment, location, retweet_count, user, hashtags)
             )
         connection.commit()
         print('Data written to Database')
