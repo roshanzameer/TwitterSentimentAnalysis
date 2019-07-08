@@ -66,7 +66,16 @@ class TwitterClient(object):
                 parsed_tweet['text'] = tweet.text
                 parsed_tweet['date'] = str(tweet.created_at)
                 parsed_tweet['sentiment'] = self.get_tweet_sentiment(tweet.text)
+                parsed_tweet['tweet_id'] = tweet.id_str
+                parsed_tweet['location'] = tweet.user.location
+                parsed_tweet['user'] = tweet.user.screen_name
+                parsed_tweet['retweet_count'] = tweet.retweet_count
 
+                if tweet.entities.get('hashtags'):
+                    parsed_tweet['hashtags'] = ', '.join([i['text'] for i in tweet.entities.get('hashtags')])
+                else:
+                    parsed_tweet['hashtags'] = ''
+                    
                 print('Search API', parsed_tweet)
 
                 #Pushing all the tweets to the Kafka Topic
